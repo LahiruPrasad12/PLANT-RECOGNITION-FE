@@ -15,7 +15,7 @@
           <ion-grid>
 
             <div class="small-header anim" style="--delay: .3s; margin-left: 5px"> <ion-text color="#000000">
-              <h3>Images</h3>
+              <h3>Plants</h3>
             </ion-text></div>
             <ion-row>
               <ion-col size="12">

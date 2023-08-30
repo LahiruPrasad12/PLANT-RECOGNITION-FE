@@ -12,15 +12,15 @@ const routes = [
         component: () => import('@/views/landing-page/index'),
     },
     {
-        path: '/admin_home/',
+        path: '/dash_board/',
         component: TabsPage,
         children: [
             {
                 path: '',
-                redirect: '/admin_home/dash_board'
+                redirect: '/dash_board/plants'
             },
             {
-                path: 'dash_board',
+                path: 'plants',
                 component: () => import('@/views/dashboard/dashboard/index')
             },
             {
