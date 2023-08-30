@@ -28,8 +28,8 @@ const routes = [
                 component: () => import('@/views/dashboard/dashboard/modules/single_plant')
             },
             {
-                path: 'tracking',
-                component: () => import('@/views/dashboard/tracking/index')
+                path: 'scan_plant',
+                component: () => import('@/views/dashboard/scans/index')
             },
             {
                 path: 'staff',

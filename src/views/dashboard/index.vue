@@ -7,7 +7,7 @@
         slot="bottom"
       >
         <ion-tab-button
-          href="/admin_home/dash_board"
+          href="/dash_board/plants"
           selected
           tab="dash_board"
           v-on:click="afterTabChange('dash_board')"
@@ -15,40 +15,25 @@
         >
           <ion-icon :icon="homeOutline" />
           <ion-label v-show="tabName === 'dash_board'" style="color: #5bf5a8"
-            >Dashboard</ion-label
+            >Plants</ion-label
           >
           <ion-label v-show="tabName !== 'dash_board'" style="color: #ffffff"
-            >Dashboard</ion-label
+            >Plants</ion-label
           >
         </ion-tab-button>
 
         <ion-tab-button
-          href="/admin_home/staff"
-          tab="staff"
-          v-on:click="afterTabChange('staff')"
-          style="background-color: black"
-        >
-          <ion-icon :icon="peopleOutline" />
-          <ion-label v-show="tabName === 'staff'" style="color: #5bf5a8"
-            >Staffs</ion-label
-          >
-          <ion-label v-show="tabName !== 'staff'" style="color: #ffffff"
-            >Staffs</ion-label
-          >
-        </ion-tab-button>
-
-        <ion-tab-button
-          href="/admin_home/tracking"
+          href="/dash_board/scan_plant"
           tab="tracking"
           v-on:click="afterTabChange('tracking')"
           style="background-color: black"
         >
           <ion-icon :icon="mapOutline" />
           <ion-label v-show="tabName === 'tracking'" style="color: #5bf5a8"
-            >Tracking</ion-label
+            >Scan</ion-label
           >
           <ion-label v-show="tabName !== 'tracking'" style="color: #ffffff"
-            >Tracking</ion-label
+            >Scan</ion-label
           >
         </ion-tab-button>
 
@@ -132,7 +117,7 @@ export default defineComponent({
             text: 'No',
             cssClass: 'alert-button-cancel',
           },
-          
+
         ],
       });
 
