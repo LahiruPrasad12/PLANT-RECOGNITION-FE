@@ -19,7 +19,7 @@
             </ion-text></div>
             <ion-row>
               <ion-col size="12">
-                <div class="plant-card anim" style="--delay: .1s">
+                <div class="plant-card anim" style="--delay: .1s" @click="() => router.push('/dash_board/plants/single_plant')">
                   <div class="image-container">
                     <img :src="getImagePath('images.jpg')" alt="Plant 1">
                   </div>
@@ -74,7 +74,7 @@ import {
     IonText,
     IonRippleEffect
 } from '@ionic/vue';
-
+import { useRouter } from "vue-router";
 export default {
   components: {
     IonPage,
@@ -105,7 +105,15 @@ export default {
     IonText,
     IonRippleEffect
   },
+
   name: "index",
+
+  setup(){
+    const router = useRouter();
+    return{
+      router
+    }
+  },
 
   methods: {
     getImagePath(imageFileName) {

@@ -24,6 +24,10 @@ const routes = [
                 component: () => import('@/views/dashboard/dashboard/index')
             },
             {
+                path: 'plants/single_plant',
+                component: () => import('@/views/dashboard/dashboard/modules/single_plant')
+            },
+            {
                 path: 'tracking',
                 component: () => import('@/views/dashboard/tracking/index')
             },

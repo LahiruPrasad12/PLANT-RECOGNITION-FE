@@ -2,19 +2,22 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title> Plant name </ion-title>
+        <ion-buttons slot="start">
+          <ion-back-button defaultHref="/previous-page"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Plant name</ion-title>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content>
+    <ion-content class="content">
       <div class="plant-detail">
         <div class="image-container">
           <img :src="getImagePath('images.jpg')" alt="Plant">
         </div>
         <div class="details">
-          <p>Age: </p>
-          <p>Type: </p>
-          <p>Description: </p>
+          <p>Age:</p>
+          <p>Type:</p>
+          <p>Description:</p>
         </div>
       </div>
     </ion-content>
@@ -76,5 +79,32 @@ export default {
 </script>
 
 <style scoped>
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+.plant-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.image-container {
+  width: 100%;
+  text-align: center;
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+}
+
+.details {
+  margin-top: 20px;
+  text-align: center;
+}
 </style>
