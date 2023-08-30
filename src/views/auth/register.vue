@@ -16,6 +16,49 @@
           </ion-col>
         </ion-row>
 
+        <ion-row class="ion-align-items-center ion-justify-content-center" style="margin-top: 1vh;">
+          <div style="border:solid 1px; border-radius: 4px; width:90vw;">
+            <ion-row>
+              <ion-col class="ion-align-self-center" size="1">
+                <ion-icon :icon="peopleCircle"></ion-icon>
+              </ion-col>
+              <ion-col class="ion-align-items-center">
+                <ion-input v-model="first_name" name="first_name" placeholder="First Name">
+                </ion-input>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-row>
+        <ion-row v-show="first_nameError" class="ion-text-start" style="padding-left: 10px">
+          <ion-col>
+            <ion-text color="danger">
+              <span>{{ first_nameError }}</span>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-align-items-center ion-justify-content-center" style="margin-top: 1vh;">
+          <div style="border:solid 1px; border-radius: 4px; width:90vw;">
+            <ion-row>
+                            <ion-col class="ion-align-self-center" size="1">
+                              <ion-icon :icon="peopleCircle"></ion-icon>
+                            </ion-col>
+              <ion-col class="ion-align-items-center">
+                <ion-input v-model="last_name" name="last_name" placeholder="Last Name">
+                </ion-input>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-row>
+
+        <ion-row v-show="last_nameError" class="ion-text-start" style="padding-left: 10px">
+          <ion-col>
+            <ion-text color="danger">
+              <span>{{ last_nameError }}</span>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+
         <ion-row class="ion-align-items-center ion-justify-content-center">
           <div style="border:solid 1px; border-radius: 4px; width:90vw; margin-top: 3vh; ">
             <ion-row>
@@ -62,6 +105,9 @@
             </ion-text>
           </ion-col>
         </ion-row>
+
+
+
         <div style="display: flex;
                   flex-direction: row;
                   justify-content: center;
@@ -72,7 +118,7 @@
             <ion-col style="">
               <ion-button :disabled="is_btn_loading" expand="full" style="height: 50px;" @click="submit">
                 <ion-spinner name="circles" :hidden="!is_btn_loading"></ion-spinner>
-                LOGIN
+                REGISTER
               </ion-button>
             </ion-col>
           </ion-row>
@@ -82,8 +128,8 @@
           <ion-col>
             <div class="ion-text-center ion-margin-top">
               <span>
-                <p @click="() => router.push('/forgot-password')">
-                  Forgot Password?
+                <p @click="() => router.push('/login')">
+                  Back to login?
                 </p>
               </span>
             </div>
@@ -119,7 +165,7 @@ import {
 } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import { useRouter } from "vue-router";
-import { eye, eyeOff, lockClosedOutline, mailOutline } from 'ionicons/icons';
+import {eye, eyeOff, lockClosedOutline, mailOutline, peopleCircle} from 'ionicons/icons';
 import { defineRule, useField, useForm } from 'vee-validate';
 import authAPI from '../../apis/modules/auth_api'
 // import {toast} from "@/common/toast";
@@ -157,7 +203,8 @@ export default defineComponent({
       errors: "",
       email: "",
       password: "",
-      passwordFieldType: "password"
+      passwordFieldType: "password",
+      first_name:""
 
     };
   },
@@ -168,6 +215,20 @@ export default defineComponent({
     defineRule('requiredEmail', value => {
       if (!value || !value.length) {
         return 'The Email field is required';
+      }
+      return true;
+    });
+
+    defineRule('requiredFirstName', value => {
+      if (!value || !value.length) {
+        return 'The First Name field is required';
+      }
+      return true;
+    });
+
+    defineRule('requiredLastName', value => {
+      if (!value || !value.length) {
+        return 'The Last Name field is required';
       }
       return true;
     });
@@ -202,6 +263,8 @@ export default defineComponent({
     const schema = {
       email: 'requiredEmail|email',
       password: 'requiredPassword',
+      first_name: 'requiredFirstName',
+      last_name: 'requiredLastName'
 
     };
 
@@ -212,18 +275,25 @@ export default defineComponent({
 
     // No need to define rules for fields
     const { value: email, errorMessage: emailError } = useField('email');
+    const { value: first_name, errorMessage: first_nameError } = useField('first_name');
+    const { value: last_name, errorMessage: last_nameError } = useField('last_name');
     const { value: password, errorMessage: passwordError } = useField('password');
 
     const router = useRouter();
     return {
       validation,
       emailError,
+      first_nameError,
+      last_nameError,
+      first_name,
+      last_name,
       passwordError,
       email,
       password,
       router,
       lockClosedOutline,
       mailOutline,
+      peopleCircle,
       eye,
       eyeOff
     }

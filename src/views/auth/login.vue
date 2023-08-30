@@ -82,8 +82,8 @@
           <ion-col>
             <div class="ion-text-center ion-margin-top">
               <span>
-                <p @click="() => router.push('/forgot-password')">
-                  Forgot Password?
+                <p @click="() => router.push('/register')">
+                  Don't have an account?
                 </p>
               </span>
             </div>
