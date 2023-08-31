@@ -32,6 +32,7 @@ const app = createApp(App)
 app.mixin({
   mixins: [toastMixin]
 });
+
 router.isReady().then(() => {
   app.mount('#app');
 });

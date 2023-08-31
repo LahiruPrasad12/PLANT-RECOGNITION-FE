@@ -314,24 +314,19 @@ export default defineComponent({
       try {
         this.is_btn_loading = true
         let payload = {
+          first_name: this.first_name,
+          last_name: this.last_name,
           email: this.email,
           password: this.password
         }
-        let respond = (await authAPI.login(payload)).data
-        localStorage.setItem('token', respond.token)
-        await this.successToast('You are logged in successfully')
-        if (respond.data.user.account_type === 'admin') {
-          window.location = '/admin_home'
-        } else if (respond.data.user.account_type === 'supplier') {
-          window.location = '/supplier/home'
-        } else if (respond.data.user.account_type === 'stock-manager') {
-          window.location = '/stock/home'
-        } else if (respond.data.user.account_type === 'staff') {
-          window.location = '/orders/home'
-        }
+        let respond = (await authAPI.register(payload)).data
+        console.log(respond)
+        localStorage.setItem('user', JSON.stringify(respond))
+        this.successToast('You are registered successfully')
       } catch (e) {
-        await this.dangerToast("Your email or password is incorrect")
+        await this.dangerToast(e.message)
       }
+      window.location = '/dash_board'
       this.is_btn_loading = false
     },
 
