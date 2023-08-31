@@ -6,36 +6,24 @@
         style="padding-bottom: 20px; background-color: black"
         slot="bottom"
       >
-        <ion-tab-button
-          href="/dash_board/plants"
-          selected
-          tab="dash_board"
-          v-on:click="afterTabChange('dash_board')"
-          style="background-color: black"
-        >
+        <ion-tab-button tab="plants"
+                        v-on:click="afterTabChange('plants')" style="background-color: black">
+
           <ion-icon :icon="homeOutline" />
-          <ion-label v-show="tabName === 'dash_board'" style="color: #5bf5a8"
-            >Plants</ion-label
-          >
-          <ion-label v-show="tabName !== 'dash_board'" style="color: #ffffff"
-            >Plants</ion-label
-          >
+          {{currentRoute}}
+          <ion-label v-show="tabName === 'plants'" style="color: #5bf5a8;">Dashboard</ion-label>
+          <ion-label v-show="tabName !== 'plants'" style="color: #ffffff;">Dashboard</ion-label>
+
         </ion-tab-button>
 
-        <ion-tab-button
-          href="/dash_board/scan_plant"
-          tab="tracking"
-          v-on:click="afterTabChange('tracking')"
-          style="background-color: black"
-        >
+        <ion-tab-button tab="scan_plant"
+                        v-on:click="afterTabChange('scan_plant')" style="background-color: black">
           <ion-icon :icon="mapOutline" />
-          <ion-label v-show="tabName === 'tracking'" style="color: #5bf5a8"
-            >Scan</ion-label
-          >
-          <ion-label v-show="tabName !== 'tracking'" style="color: #ffffff"
-            >Scan</ion-label
-          >
+          <ion-label v-show="tabName === 'plants'" style="color: #5bf5a8;">Scan</ion-label>
+          <ion-label v-show="tabName !== 'plants'" style="color: #ffffff;">Scan</ion-label>
+
         </ion-tab-button>
+
 
         <ion-tab-button
           @click="confirmRequest()"
@@ -100,7 +88,12 @@ export default defineComponent({
     },
     async afterTabChange(tabName) {
       this.tabName = tabName;
+      window.location = '/dash_board/'+tabName
     },
+
+    // navigateBar(){
+    //   window.location =
+    // },
      async confirmRequest() {
       const alert = await alertController.create({
         header: 'Are you sure you want logout?',
@@ -141,6 +134,7 @@ export default defineComponent({
       personCircleOutline,
       logOutOutline,
       router,
+      currentRoute: router.path
     };
   },
   data() {

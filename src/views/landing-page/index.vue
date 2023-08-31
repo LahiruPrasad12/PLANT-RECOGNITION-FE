@@ -36,7 +36,7 @@
                   router-link="/login"
                   style="height: 50px;"
               >
-                LOGIN
+                GET START
               </ion-button>
             </ion-col>
 

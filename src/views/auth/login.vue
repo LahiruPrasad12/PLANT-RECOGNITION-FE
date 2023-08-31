@@ -236,9 +236,9 @@ export default defineComponent({
   methods: {
     async submit() {
       this.v = (await this.validation());
-      if (this.v.valid) {
+      // if (this.v.valid) {
         await this.Login();
-      }
+      // }
     },
     async Login() {
       try {
@@ -247,18 +247,10 @@ export default defineComponent({
           email: this.email,
           password: this.password
         }
-        let respond = (await authAPI.login(payload)).data
-        localStorage.setItem('token', respond.token)
-        await this.successToast('You are logged in successfully')
-        if (respond.data.user.account_type === 'admin') {
-          window.location = '/admin_home'
-        } else if (respond.data.user.account_type === 'supplier') {
-          window.location = '/supplier/home'
-        } else if (respond.data.user.account_type === 'stock-manager') {
-          window.location = '/stock/home'
-        } else if (respond.data.user.account_type === 'staff') {
-          window.location = '/orders/home'
-        }
+        // let respond = (await authAPI.login(payload)).data
+        // localStorage.setItem('token', respond.token)
+        this.successToast('You are logged in successfully')
+        window.location = '/dash_board'
       } catch (e) {
         await this.dangerToast("Your email or password is incorrect")
       }

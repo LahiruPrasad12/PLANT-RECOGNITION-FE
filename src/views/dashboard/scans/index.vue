@@ -4,6 +4,10 @@
       <ion-icon slot="start" :icon="locationIcon"></ion-icon>
       Get Geolocation
     </ion-button>
+    <ion-button @click="openCamera" expand="full">
+      <ion-icon slot="start" :icon="cameraIcon"></ion-icon>
+      Open Camera
+    </ion-button>
     <ion-card v-if="location">
       <ion-card-header>
         <ion-card-title>Location Information</ion-card-title>
@@ -18,8 +22,8 @@
 
 <script>
 import { IonButton, IonContent, IonIcon, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from "@ionic/vue";
-import { locationOutline } from "ionicons/icons";
-
+import { locationOutline, cameraOutline } from "ionicons/icons";
+// import {Camera} from "@capacitor/camera";
 export default {
   components: {
     IonButton,
@@ -51,7 +55,26 @@ export default {
       };
     },
     handleError(error) {
-      // Error handling as before...
+      alert(error);
+    },
+    openCamera() {
+      // if (navigator.camera) {
+      //   const cameraOptions = {
+      //     destinationType: Camera.DestinationType.FILE_URI,
+      //     encodingType: Camera.EncodingType.JPEG,
+      //     mediaType: Camera.MediaType.PICTURE,
+      //   };
+      //   navigator.camera.getPicture(this.handleCameraSuccess, this.handleCameraError, cameraOptions);
+      // } else {
+        alert("Camera access is not supported by your browser.");
+      // }
+    },
+    handleCameraSuccess(imageUri) {
+      // Handle the image URI returned by the camera capture
+      alert("Image captured: " + imageUri);
+    },
+    handleCameraError(error) {
+      alert("Camera error: " + error);
     },
   },
 };
