@@ -10,7 +10,6 @@
                         v-on:click="afterTabChange('plants')" style="background-color: black">
 
           <ion-icon :icon="homeOutline" />
-          {{currentRoute}}
           <ion-label v-show="tabName === 'plants'" style="color: #5bf5a8;">Dashboard</ion-label>
           <ion-label v-show="tabName !== 'plants'" style="color: #ffffff;">Dashboard</ion-label>
 
