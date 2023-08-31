@@ -323,10 +323,11 @@ export default defineComponent({
         console.log(respond)
         localStorage.setItem('user', JSON.stringify(respond))
         this.successToast('You are registered successfully')
+        window.location = '/dash_board'
       } catch (e) {
         await this.dangerToast(e.message)
       }
-      window.location = '/dash_board'
+      
       this.is_btn_loading = false
     },
 
