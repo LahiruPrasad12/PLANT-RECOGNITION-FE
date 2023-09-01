@@ -11,12 +11,14 @@
         <img :src="imageURL" alt="Plant" />
       </div>
 
-      <ion-label class="plant-name">{{ predicted_name }}</ion-label>
+      <ion-label class="plant-name">
+        Predicted Name : {{ predicted_name }}</ion-label
+      >
 
       <!-- Buttons -->
       <ion-row>
         <ion-col size="12">
-          <ion-button expand="full" @click="save">Save</ion-button>
+          <ion-button expand="full" @click="uploadPredictedData">Save</ion-button>
         </ion-col>
         <ion-col size="12">
           <ion-button expand="full" @click="cancelUpload">Cancel</ion-button>
@@ -81,6 +83,7 @@ export default {
       imageURL: null,
       is_loading: false,
       predicted_name: null,
+      loggedUser: JSON.parse(localStorage.getItem("user")),
     };
   },
   methods: {
@@ -144,11 +147,30 @@ export default {
           image_url: this.imageURL,
         };
         let respond = (await prediction_api.predictImage(payload)).data;
-        this.predicted_name = respond.message;
+        this.predicted_name = respond.result_index;
 
         console.log(respond);
       } catch (e) {
-        alert(error)
+        alert(error);
+      }
+      this.is_loading = false;
+    },
+
+    async uploadPredictedData() {
+      try {
+        this.is_loading = true;
+        let payload = {
+          user_id: this.loggedUser._id,
+          image_url: this.imageURL,
+          predicted_name: this.predicted_name,
+        };
+        let respond = (await prediction_api.savePredictedData(payload)).data;
+        this.predicted_name = respond.result_index;
+        window.location = "/dash_board";
+
+        console.log(respond);
+      } catch (e) {
+        alert(error);
       }
       this.is_loading = false;
     },
@@ -201,6 +223,8 @@ export default {
 .plant-name {
   text-align: center;
   margin-bottom: 10px;
+  font-weight: bold; /* Make the text bold */
+  font-size: 16px;
 }
 
 .plant-image {
