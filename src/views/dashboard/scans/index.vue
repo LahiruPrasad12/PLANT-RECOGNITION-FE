@@ -1,6 +1,29 @@
 <template>
-  <ion-content class="ion-padding">
-    <div>
+  <ion-content class="ion-padding" fullscreen>
+    <ion-loading
+      :is-open="is_loading"
+      cssClass="my-custom-class"
+      message="Please wait..."
+    />
+    <div v-if="imageURL !== null">
+      <!-- Your image preview here -->
+      <div class="image-container">
+        <img :src="imageURL" alt="Plant" />
+      </div>
+
+      <ion-label class="plant-name">{{ predicted_name }}</ion-label>
+
+      <!-- Buttons -->
+      <ion-row>
+        <ion-col size="12">
+          <ion-button expand="full" @click="save">Save</ion-button>
+        </ion-col>
+        <ion-col size="12">
+          <ion-button expand="full" @click="cancelUpload">Cancel</ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div v-else>
       <!-- Your other content here -->
       <ion-button @click="getGeolocation" expand="full">
         <ion-icon slot="start" :icon="locationIcon"></ion-icon>
@@ -33,10 +56,11 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
+  IonLoading,
 } from "@ionic/vue";
 import { locationOutline, cameraOutline } from "ionicons/icons";
 import { Camera, CameraResultType } from "@capacitor/camera";
-import imagae_save_api from "../../../apis/modules/image_save_api";
+import prediction_api from "../../../apis/modules/prediction_api";
 import axios from "axios";
 
 export default {
@@ -48,11 +72,15 @@ export default {
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
+    IonLoading,
   },
   data() {
     return {
       location: null,
       locationIcon: locationOutline,
+      imageURL: null,
+      is_loading: false,
+      predicted_name: null,
     };
   },
   methods: {
@@ -86,22 +114,50 @@ export default {
       // Do something with the image
       const imageBlob = this.base64ToBlob(image.base64String, "image/jpeg");
 
+      this.is_loading = true;
+
       const formData = new FormData();
       formData.append("key", "71dc79788689cfef44877c37564a1fb5");
       formData.append("image", imageBlob);
 
-      const response = await axios.post(
-        "https://api.imgbb.com/1/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log("Image uploaded:", response.data);
+      try {
+        const response = await axios.post(
+          "https://api.imgbb.com/1/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log(response.data);
+        this.imageURL = response.data.data.display_url;
+        this.predictImage();
+      } catch (e) {
+        alert(error);
+      }
     },
+
+    async predictImage() {
+      try {
+        let payload = {
+          image_url: this.imageURL,
+        };
+        let respond = (await prediction_api.predictImage(payload)).data;
+        this.predicted_name = respond.message;
+
+        console.log(respond);
+      } catch (e) {
+        alert(error)
+      }
+      this.is_loading = false;
+    },
+
+    cancelUpload() {
+      this.imageURL = null;
+    },
+
+    async uploadImage() {},
 
     base64ToBlob(base64, contentType) {
       const sliceSize = 512;
@@ -132,4 +188,22 @@ export default {
 
 <style scoped>
 /* Add any custom styles here if needed */
+.image-container {
+  width: 100%;
+  text-align: center;
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+}
+
+.plant-name {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.plant-image {
+  max-width: 100%;
+}
 </style>
