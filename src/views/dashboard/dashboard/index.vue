@@ -1,38 +1,49 @@
 <template>
   <ion-page>
-    <ion-header translucent >
-      <ion-toolbar class="toolbar" style="padding-top: 10px; ">
+    <ion-header translucent>
+      <ion-toolbar class="toolbar" style="padding-top: 10px">
         <ion-title>DASHBOARD</ion-title>
         <div class="ion-activatable ripple-parent circle">
-      <ion-ripple-effect></ion-ripple-effect>
-    </div>
+          <ion-ripple-effect></ion-ripple-effect>
+        </div>
       </ion-toolbar>
     </ion-header>
-    <ion-content class="main-container">
+    <ion-content class="main-container" fullscreen>
+      <ion-loading
+        :is-open="is_loading"
+        cssClass="my-custom-class"
+        message="Please wait..."
+      />
       <div class="">
         <ion-list>
-
           <ion-grid>
-
-            <div class="small-header anim" style="--delay: .3s; margin-left: 5px"> <ion-text color="#000000">
-              <h3>Plants</h3>
-            </ion-text></div>
-            <ion-row>
+            <div
+              class="small-header anim"
+              style="--delay: 0.3s; margin-left: 5px"
+            >
+              <ion-text color="#000000">
+                <h3>Plants</h3>
+              </ion-text>
+            </div>
+            <ion-row v-for="data in all_data" :key="data._id">
               <ion-col size="12">
-                <div class="plant-card anim" style="--delay: .1s" @click="() => router.push('/dash_board/plants/single_plant')">
+                <div
+                  class="plant-card anim"
+                  style="--delay: 0.1s"
+                  @click="() => router.push('/dash_board/plants/single_plant')"
+                >
                   <div class="image-container">
-                    <img :src="getImagePath('images.jpg')" alt="Plant 1">
+                    <img :src=data.url  alt="Plant 1" />
                   </div>
                   <div class="details">
-                    <h2>Apple</h2>
+                    <h2>{{ data.predicted_name }}</h2>
                     <p>Age: 10</p>
-<!--                    <p>Type: Apple</p>-->
+                    <!--                    <p>Type: Apple</p>-->
                   </div>
                 </div>
               </ion-col>
             </ion-row>
           </ion-grid>
-
         </ion-list>
       </div>
     </ion-content>
@@ -40,7 +51,7 @@
 </template>
 
 <script>
-import '@/assets/test.css'
+import "@/assets/test.css";
 import {
   IonAvatar,
   IonBackButton,
@@ -71,10 +82,11 @@ import {
   IonSelect,
   IonGrid,
   IonSelectOption,
-    IonText,
-    IonRippleEffect
-} from '@ionic/vue';
+  IonText,
+  IonRippleEffect,
+} from "@ionic/vue";
 import { useRouter } from "vue-router";
+import prediction_api from "@/apis/modules/prediction_api";
 export default {
   components: {
     IonPage,
@@ -98,29 +110,54 @@ export default {
     IonCol,
     IonNavLink,
     IonLoading,
-    IonFab, IonFabButton, IonIcon, IonFabList, IonButton,
+    IonFab,
+    IonFabButton,
+    IonIcon,
+    IonFabList,
+    IonButton,
     IonSelect,
     IonGrid,
     IonSelectOption,
     IonText,
-    IonRippleEffect
+    IonRippleEffect,
   },
 
   name: "index",
 
-  setup(){
+  data() {
+    return {
+      is_loading: false,
+      all_data: [],
+    };
+  },
+
+  setup() {
     const router = useRouter();
-    return{
-      router
-    }
+    return {
+      router,
+    };
+  },
+
+  mounted() {
+    this.getAllPredictedData();
   },
 
   methods: {
     getImagePath(imageFileName) {
       return require(`@/assets/${imageFileName}`);
-    }
-  }
-}
+    },
+
+    async getAllPredictedData() {
+      try {
+        this.is_loading = true;
+        let respond = (await prediction_api.predictedData()).data;
+        this.all_data = respond;
+        console.log(respond);
+      } catch (e) {}
+      this.is_loading = false;
+    },
+  },
+};
 </script>
 
 <style scoped>
