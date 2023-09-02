@@ -45,8 +45,6 @@
                   </div>
                   <div class="details">
                     <h2>{{ data.predicted_name }}</h2>
-                    <p>Age: 10</p>
-                    <!--                    <p>Type: Apple</p>-->
                   </div>
                 </div>
               </ion-col>
@@ -229,7 +227,8 @@ img {
 
 .details {
   flex: 0.5;
-  margin-top: 5px;
+  margin-top: auto; /* Push the text to the vertical center */
+  margin-bottom: auto; 
 }
 
 h2 {
