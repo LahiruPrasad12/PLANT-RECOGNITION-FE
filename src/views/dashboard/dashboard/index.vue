@@ -30,10 +30,10 @@
                 <div
                   class="plant-card anim"
                   style="--delay: 0.1s"
-                  @click="() => router.push('/dash_board/plants/single_plant')"
+                  @click="openSingleStaffModal(data)"
                 >
                   <div class="image-container">
-                    <img :src=data.url  alt="Plant 1" />
+                    <img :src="data.url" alt="Plant 1" />
                   </div>
                   <div class="details">
                     <h2>{{ data.predicted_name }}</h2>
@@ -46,6 +46,7 @@
           </ion-grid>
         </ion-list>
       </div>
+      <SingleStaff ref="singleStaff" @closeModel="closeModel()" @openUpdateStaffModal="openUpdateStaffModal"/>
     </ion-content>
   </ion-page>
 </template>
@@ -87,6 +88,7 @@ import {
 } from "@ionic/vue";
 import { useRouter } from "vue-router";
 import prediction_api from "@/apis/modules/prediction_api";
+import SingleStaff from './modules/single_plant.vue'
 export default {
   components: {
     IonPage,
@@ -120,6 +122,7 @@ export default {
     IonSelectOption,
     IonText,
     IonRippleEffect,
+    SingleStaff
   },
 
   name: "index",
@@ -143,6 +146,16 @@ export default {
   },
 
   methods: {
+    openSingleStaffModal(data) {
+      this.$refs.singleStaff.handleModel(data)
+    },
+    navigateToSinglePlant(data) {
+      this.$router.push({
+        name: "single_plant",
+        params: { id: data._id }, // Pass the ID as a parameter
+        state: { data: data }, // Pass the data object as state
+      });
+    },
     getImagePath(imageFileName) {
       return require(`@/assets/${imageFileName}`);
     },

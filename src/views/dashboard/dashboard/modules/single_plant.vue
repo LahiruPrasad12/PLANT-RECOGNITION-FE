@@ -1,84 +1,128 @@
 <template>
-  <ion-page>
-    <ion-header>
+  <ion-modal :is-open="is_model_open">
+    <ion-content>
       <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-back-button defaultHref="/previous-page"></ion-back-button>
+        <ion-title>Modal</ion-title>
+        <ion-buttons slot="end">
+          <ion-button color="light" @click="closeModel()">Close</ion-button>
         </ion-buttons>
-        <ion-title>Plant name</ion-title>
       </ion-toolbar>
-    </ion-header>
-
-    <ion-content class="content">
-      <div class="plant-detail">
-        <div class="image-container">
-          <img :src="getImagePath('images.jpg')" alt="Plant">
+      <ion-content class="content">
+        <div class="plant-detail">
+          <div class="image-container">
+            <img :src="single_plant.url" alt="Plant" />
+          </div>
+          <div class="details">
+            <p>Age: 10</p>
+            <p>Type: {{ single_plant.predicted_name }}</p>
+            <p>Description:</p>
+          </div>
         </div>
-        <div class="details">
-          <p>Age:</p>
-          <p>Type:</p>
-          <p>Description:</p>
-        </div>
-      </div>
+      </ion-content>
     </ion-content>
-  </ion-page>
+  </ion-modal>
 </template>
-
-<script>
+  
+  <script>
+import staff_apis from "@/apis/modules/admin_apis/staff_apis";
 import {
-  IonAvatar,
-  IonBackButton, IonButton,
-  IonButtons, IonCol,
-  IonContent, IonFab, IonFabButton, IonFabList,
-  IonFooter, IonGrid,
-  IonHeader, IonIcon, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel,
-  IonList, IonListHeader, IonLoading, IonNavLink,
-  IonPage, IonRefresher, IonRefresherContent, IonRippleEffect, IonRow, IonSelect, IonSelectOption, IonText,
-  IonTitle,
+  IonButtons,
+  IonButton,
+  IonModal,
+  IonHeader,
+  IonContent,
   IonToolbar,
+  IonTitle,
+  IonItem,
+  IonList,
+  IonAvatar,
+  IonImg,
+  IonLabel,
+  IonRow,
+  IonCol,
+  IonText,
+  alertController,
+  IonSpinner,
 } from "@ionic/vue";
+import { defineComponent } from "vue";
 
-export default {
-  name: "single_plant",
+export default defineComponent({
   components: {
-    IonPage,
+    IonButtons,
+    IonButton,
+    IonModal,
     IonHeader,
+    IonContent,
     IonToolbar,
     IonTitle,
-    IonContent,
-    IonButtons,
-    IonBackButton,
-    IonFooter,
-    IonList,
-    IonListHeader,
     IonItem,
-    IonLabel,
-    IonInfiniteScrollContent,
-    IonInfiniteScroll,
-    IonRefresher,
-    IonRefresherContent,
+    IonList,
     IonAvatar,
+    IonImg,
+    IonLabel,
     IonRow,
     IonCol,
-    IonNavLink,
-    IonLoading,
-    IonFab, IonFabButton, IonIcon, IonFabList, IonButton,
-    IonSelect,
-    IonGrid,
-    IonSelectOption,
     IonText,
-    IonRippleEffect,
+    IonSpinner,
   },
-
+  data() {
+    return {
+      is_btn_loading: false,
+      single_plant: {},
+      is_model_open: false,
+    };
+  },
   methods: {
-    getImagePath(imageFileName) {
-      return require(`@/assets/${imageFileName}`);
-    }
-  }
-}
-</script>
+    handleModel(data) {
+      this.single_plant = data;
+      this.is_model_open = !this.is_model_open;
+    },
 
+    closeModel() {
+      this.is_model_open = !this.is_model_open;
+    },
+
+    // async confirmRequest() {
+    //   const alert = await alertController.create({
+    //     header: "Are you sure?",
+    //     cssClass: "custom-alert",
+    //     buttons: [
+    //       {
+    //         text: "No",
+    //         cssClass: "alert-button-cancel",
+    //       },
+    //       {
+    //         text: "Yes",
+    //         cssClass: "alert-button-confirm",
+    //         handler: () => {
+    //           this.deleteUser();
+    //         },
+    //       },
+    //     ],
+    //   });
+
+    //   await alert.present();
+    // },
+  },
+});
+</script>
+  
+  
 <style scoped>
+/* Apply custom CSS to make the modal full-screen */
+ion-modal {
+  --width: 100%;
+  --height: 100%;
+  --border-radius: 0;
+  --position: fixed;
+  --top: 0;
+  --left: 0;
+  --background: transparent;
+}
+
+ion-content {
+  height: 100%; /* Fill the entire height of the modal */
+}
 .content {
   display: flex;
   flex-direction: column;
@@ -108,3 +152,4 @@ export default {
   text-align: center;
 }
 </style>
+  
