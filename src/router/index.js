@@ -24,10 +24,6 @@ const routes = [
                 path: 'scan_plant',
                 component: () => import('@/views/dashboard/scans/index')
             },
-            {
-                path: 'staff',
-                component: () => import('@/views/dashboard/staff/index')
-            },
         ]
     },
 ]
