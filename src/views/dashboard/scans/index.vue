@@ -18,7 +18,9 @@
       <!-- Buttons -->
       <ion-row>
         <ion-col size="12">
-          <ion-button expand="full" @click="uploadPredictedData">Save</ion-button>
+          <ion-button expand="full" @click="uploadPredictedData"
+            >Save</ion-button
+          >
         </ion-col>
         <ion-col size="12">
           <ion-button expand="full" @click="cancelUpload">Cancel</ion-button>
@@ -84,6 +86,9 @@ export default {
       is_loading: false,
       predicted_name: null,
       loggedUser: JSON.parse(localStorage.getItem("user")),
+      latitude:'',
+      longitude:''
+
     };
   },
   methods: {
@@ -91,20 +96,41 @@ export default {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           this.handleSuccess,
-          this.handleError
+          this.handleError,
+          {
+            enableHighAccuracy: true, // Try to get more accurate location if available
+            timeout: 10000, // Set a timeout for how long to wait for the location (in milliseconds)
+          }
         );
       } else {
-        alert("Geolocation is not supported by your browser.");
+        alert("Geolocation is not supported by your device.");
       }
     },
     handleSuccess(position) {
-      this.location = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      };
+      // Handle successful geolocation here
+      this.location = position.coords
+      this.latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
     },
+
     handleError(error) {
-      alert(error);
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          alert("Permission to access location was denied by the user.");
+          break;
+        case error.POSITION_UNAVAILABLE:
+          alert("Location information is unavailable.");
+          break;
+        case error.TIMEOUT:
+          alert("The request to get user location timed out.");
+          break;
+        case error.UNKNOWN_ERROR:
+          alert("An unknown error occurred while trying to get the location.");
+          break;
+        default:
+          alert("An error occurred while trying to get the location.");
+      }
     },
 
     async openCamera() {

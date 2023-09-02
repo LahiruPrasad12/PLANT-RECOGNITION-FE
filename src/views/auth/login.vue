@@ -1,145 +1,148 @@
 <template>
   <ion-page>
-    <ion-content class="login-wrap">
-      <ion-grid>
-        <ion-row style="padding-top: 15px; align-items: center">
-          <ion-col>
-            <!-- <ion-img class="ion-float-center" routerLink="/" routerDirection="root"
+    <div class="background-container">
+      <ion-content class="login-wrap">
+        <ion-grid>
+          <ion-row style="padding-top: 15px; align-items: center">
+            <ion-col>
+              <!-- <ion-img class="ion-float-center" routerLink="/" routerDirection="root"
               src="https://i.postimg.cc/Qd2tjq17/m.png" style="width:50%" /> -->
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-text>
-              <h2 style="text-align: center; margin-top: 10%">Login</h2>
-            </ion-text>
-          </ion-col>
-        </ion-row>
-
-        <ion-row class="ion-align-items-center ion-justify-content-center">
-          <div
-            style="
-              border: solid 1px;
-              border-radius: 4px;
-              width: 90vw;
-              margin-top: 3vh;
-            "
-          >
-            <ion-row>
-              <ion-col class="ion-align-self-center" size="1">
-                <ion-icon :icon="mailOutline" />
-              </ion-col>
-              <ion-col class="ion-align-items-center">
-                <ion-input
-                  v-model="email"
-                  name="email"
-                  placeholder="Email Address"
-                  required
-                  autocomplete="email"
-                />
-              </ion-col>
-            </ion-row>
-          </div>
-        </ion-row>
-        <ion-row
-          v-show="emailError"
-          class="ion-text-start"
-          style="padding-left: 10px"
-        >
-          <ion-col>
-            <ion-text color="danger">
-              <span>{{ emailError }}</span>
-            </ion-text>
-          </ion-col>
-        </ion-row>
-
-        <ion-row
-          class="ion-align-items-center ion-justify-content-center"
-          style="margin-top: 1vh"
-        >
-          <div style="border: solid 1px; border-radius: 4px; width: 90vw">
-            <ion-row>
-              <ion-col class="ion-align-self-center" size="1">
-                <ion-icon :icon="lockClosedOutline"></ion-icon>
-              </ion-col>
-              <ion-col class="ion-align-items-center">
-                <ion-input
-                  v-model="password"
-                  :type="passwordFieldType"
-                  name="password"
-                  placeholder="Password"
-                  autocomplete="password"
-                >
-                </ion-input>
-              </ion-col>
-
-              <ion-col
-                v-show="password"
-                id="eyeIcon"
-                class="ion-align-self-center"
-                size="1"
-              >
-                <ion-icon
-                  v-if="passwordFieldType !== 'password'"
-                  :icon="eye"
-                  @click="passwordTongle"
-                />
-                <ion-icon v-else :icon="eyeOff" @click="passwordTongle" />
-              </ion-col>
-            </ion-row>
-          </div>
-        </ion-row>
-        <ion-row
-          v-show="passwordError"
-          class="ion-text-start"
-          style="padding-left: 10px"
-        >
-          <ion-col>
-            <ion-text color="danger">
-              <span>{{ passwordError }}</span>
-            </ion-text>
-          </ion-col>
-        </ion-row>
-        <div
-          style="
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            right: -0.4px;
-            border-radius: 4px;
-          "
-        >
-          <ion-row class="ion-align-items-center ion-justify-content-center">
-            <ion-col style="">
-              <ion-button
-                :disabled="is_btn_loading"
-                expand="full"
-                style="height: 50px"
-                @click="submit"
-              >
-                <ion-spinner
-                  name="circles"
-                  :hidden="!is_btn_loading"
-                ></ion-spinner>
-                LOGIN
-              </ion-button>
+              <img :src="Logo1" alt="Logo" class="logo" style="width: 20%" />
             </ion-col>
           </ion-row>
-        </div>
-        <ion-row>
-          <ion-col>
-            <div class="ion-text-center ion-margin-top">
-              <span>
-                <p @click="() => router.push('/register')">
-                  Don't have an account?
-                </p>
-              </span>
+          <ion-row>
+            <ion-col>
+              <ion-text>
+                <h2 style="text-align: center; margin-top: 10%">Login</h2>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="ion-align-items-center ion-justify-content-center">
+            <div
+              style="
+                border: solid 1px;
+                border-radius: 4px;
+                width: 90vw;
+                margin-top: 3vh;
+              "
+            >
+              <ion-row>
+                <ion-col class="ion-align-self-center" size="1">
+                  <ion-icon :icon="mailOutline" />
+                </ion-col>
+                <ion-col class="ion-align-items-center">
+                  <ion-input
+                    v-model="email"
+                    name="email"
+                    placeholder="Email Address"
+                    required
+                    autocomplete="email"
+                  />
+                </ion-col>
+              </ion-row>
             </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-content>
+          </ion-row>
+          <ion-row
+            v-show="emailError"
+            class="ion-text-start"
+            style="padding-left: 10px"
+          >
+            <ion-col>
+              <ion-text color="danger">
+                <span>{{ emailError }}</span>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+
+          <ion-row
+            class="ion-align-items-center ion-justify-content-center"
+            style="margin-top: 1vh"
+          >
+            <div style="border: solid 1px; border-radius: 4px; width: 90vw">
+              <ion-row>
+                <ion-col class="ion-align-self-center" size="1">
+                  <ion-icon :icon="lockClosedOutline"></ion-icon>
+                </ion-col>
+                <ion-col class="ion-align-items-center">
+                  <ion-input
+                    v-model="password"
+                    :type="passwordFieldType"
+                    name="password"
+                    placeholder="Password"
+                    autocomplete="password"
+                  >
+                  </ion-input>
+                </ion-col>
+
+                <ion-col
+                  v-show="password"
+                  id="eyeIcon"
+                  class="ion-align-self-center"
+                  size="1"
+                >
+                  <ion-icon
+                    v-if="passwordFieldType !== 'password'"
+                    :icon="eye"
+                    @click="passwordTongle"
+                  />
+                  <ion-icon v-else :icon="eyeOff" @click="passwordTongle" />
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-row>
+          <ion-row
+            v-show="passwordError"
+            class="ion-text-start"
+            style="padding-left: 10px"
+          >
+            <ion-col>
+              <ion-text color="danger">
+                <span>{{ passwordError }}</span>
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <div
+            style="
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+              align-items: center;
+              right: -0.4px;
+              border-radius: 4px;
+            "
+          >
+            <ion-row class="ion-align-items-center ion-justify-content-center">
+              <ion-col style="">
+                <ion-button
+                  :disabled="is_btn_loading"
+                  expand="full"
+                  style="height: 50px"
+                  @click="submit"
+                >
+                  <ion-spinner
+                    name="circles"
+                    :hidden="!is_btn_loading"
+                  ></ion-spinner>
+                  LOGIN
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </div>
+          <ion-row>
+            <ion-col>
+              <div class="ion-text-center ion-margin-top">
+                <span>
+                  <p @click="() => router.push('/register')">
+                    Don't have an account?
+                  </p>
+                </span>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-content>
+    </div>
   </ion-page>
 </template>
 
@@ -172,6 +175,7 @@ import { eye, eyeOff, lockClosedOutline, mailOutline } from "ionicons/icons";
 import { defineRule, useField, useForm } from "vee-validate";
 import authAPI from "../../apis/modules/auth_api";
 // import {toast} from "@/common/toast";
+import Logo1 from "@/assets/images/logo1.png"; // Adjust the path to your image
 
 /*dis*/
 export default defineComponent({
@@ -206,6 +210,7 @@ export default defineComponent({
       email: "",
       password: "",
       passwordFieldType: "password",
+      Logo1: Logo1,
     };
   },
   setup() {
@@ -300,12 +305,12 @@ export default defineComponent({
           email: this.email,
           password: this.password,
         };
-        let respond = (await authAPI.login(payload)).data
-        localStorage.setItem('user', JSON.stringify(respond))
+        let respond = (await authAPI.login(payload)).data;
+        localStorage.setItem("user", JSON.stringify(respond));
         this.successToast("You are logged in successfully");
         window.location = "/dash_board";
       } catch (e) {
-        console.log(e.message)
+        console.log(e.message);
         await this.dangerToast("Your email or password is incorrect");
       }
       this.is_btn_loading = false;
@@ -320,6 +325,28 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+:host {
+  --ion-background-color: transparent; /* Set the background color to transparent */
+  background: none !important; /* Remove any background set by Ionic */
+}
+.logo {
+  /* Add your logo styles here */
+  display: block; /* Ensure the image is a block element */
+  margin: 0 auto; /* Center the image horizontally */
+  border: 2px solid #ffffff; /* Add a border (adjust the color and width as needed) */
+  border-radius: 50%; /* Apply border-radius for a circular shape (adjust as needed) */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a shadow (adjust as needed) */
+}
+
+.background-container {
+  /* Set the background image using a relative path */
+  background-image: url(~@/assets/images/background.jpg);
+  background-size: cover;
+  background-position: center;
+  height: 100vh; /* Set the height to cover the entire viewport height */
+}
+
 :root {
   --ion-safe-area-top: 20px;
   --ion-safe-area-bottom: 22px;
