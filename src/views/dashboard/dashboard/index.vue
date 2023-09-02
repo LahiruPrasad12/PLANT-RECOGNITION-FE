@@ -9,11 +9,19 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="main-container" fullscreen>
+      <ion-searchbar
+        v-model="filterKeyword"
+        placeholder="Filter plants by name"
+        show-cancel-button="always"
+        @ionClear="clearFilter"
+        @ionInput="onSearchInput"
+      ></ion-searchbar>
       <ion-loading
         :is-open="is_loading"
         cssClass="my-custom-class"
         message="Please wait..."
       />
+
       <div class="">
         <ion-list>
           <ion-grid>
@@ -25,7 +33,7 @@
                 <h3>Plants</h3>
               </ion-text>
             </div>
-            <ion-row v-for="data in all_data" :key="data._id">
+            <ion-row v-for="data in filtered_data" :key="data._id">
               <ion-col size="12">
                 <div
                   class="plant-card anim"
@@ -46,12 +54,17 @@
           </ion-grid>
         </ion-list>
       </div>
-      <SingleStaff ref="singleStaff" @closeModel="closeModel()" @openUpdateStaffModal="openUpdateStaffModal"/>
+      <SingleStaff
+        ref="singleStaff"
+        @closeModel="closeModel()"
+        @openUpdateStaffModal="openUpdateStaffModal"
+      />
     </ion-content>
   </ion-page>
 </template>
 
 <script>
+import { ref, watch } from "vue";
 import "@/assets/test.css";
 import {
   IonAvatar,
@@ -88,7 +101,7 @@ import {
 } from "@ionic/vue";
 import { useRouter } from "vue-router";
 import prediction_api from "@/apis/modules/prediction_api";
-import SingleStaff from './modules/single_plant.vue'
+import SingleStaff from "./modules/single_plant.vue";
 export default {
   components: {
     IonPage,
@@ -122,7 +135,7 @@ export default {
     IonSelectOption,
     IonText,
     IonRippleEffect,
-    SingleStaff
+    SingleStaff,
   },
 
   name: "index",
@@ -131,6 +144,8 @@ export default {
     return {
       is_loading: false,
       all_data: [],
+      filterKeyword: "",
+      filtered_data: [],
     };
   },
 
@@ -147,8 +162,25 @@ export default {
 
   methods: {
     openSingleStaffModal(data) {
-      this.$refs.singleStaff.handleModel(data)
+      this.$refs.singleStaff.handleModel(data);
     },
+
+    clearFilter(){
+      console.log('clear')
+      this.filtered_data = this.all_data
+    },
+
+    onSearchInput(event) {
+      console.log();
+      if (event.target.value) {
+        this.filtered_data = this.all_data.filter((e) =>
+          e.predicted_name.toLowerCase().includes(event.target.value)
+        );
+      }else{
+        this.filtered_data = this.all_data
+      }
+    },
+
     navigateToSinglePlant(data) {
       this.$router.push({
         name: "single_plant",
@@ -165,6 +197,7 @@ export default {
         this.is_loading = true;
         let respond = (await prediction_api.predictedData()).data;
         this.all_data = respond;
+        this.filtered_data = this.all_data;
         console.log(respond);
       } catch (e) {}
       this.is_loading = false;
@@ -206,5 +239,30 @@ h2 {
 
 p {
   margin: 5px 0;
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto; /* Set margin to auto on both sides */
+  max-width: 80%; /* Limit the maximum width of the filter container */
+  margin-top: 10px; /* Adjust the top margin as needed */
+}
+
+/* Style the filter icon */
+.filter-icon {
+  color: #333; /* Adjust the color as needed */
+  font-size: 24px; /* Adjust the font size as needed */
+  margin-right: 10px; /* Add spacing between the icon and input */
+}
+
+/* Style the filter input */
+.filter-input {
+  width: 100%; /* Make the input fill the available space */
+  border: 1px solid #ccc; /* Add a border or customize as needed */
+  border-radius: 5px; /* Add rounded corners */
+  padding: 8px; /* Add padding as needed */
+  font-size: 16px; /* Adjust the font size as needed */
 }
 </style>
